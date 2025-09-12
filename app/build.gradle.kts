@@ -53,7 +53,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.lifecycle.viewmodel.compose) // Use the latest stable version
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.accompanist.permissions)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)

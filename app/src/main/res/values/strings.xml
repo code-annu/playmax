@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PlayMax</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="video_permission_message">To let you pick and play video files, PlayMax needs permission to access your videos. Please grant access so you can enjoy this feature.</string>
+    <string name="pause_video">Pause</string>
+    <string name="close_controller">Close</string>
+    <string name="play_now">Play now</string>
 </resources>

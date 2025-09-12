@@ -13,19 +13,7 @@ fun PlayMaxTheme(
     isInDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = if (isInDarkTheme) {
-        darkColorScheme(
-            primary = Purple80,
-            secondary = PurpleGrey80,
-            tertiary = Pink80
-        )
-    } else {
-        lightColorScheme(
-            primary = Purple40,
-            secondary = PurpleGrey40,
-            tertiary = Pink40
-        )
-    }
+    val colorScheme = if(isInDarkTheme) darkColorScheme() else lightColorScheme()
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

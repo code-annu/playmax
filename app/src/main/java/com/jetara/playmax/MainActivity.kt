@@ -1,8 +1,10 @@
 package com.jetara.playmax
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.tv.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,37 +13,31 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Surface
+import com.jetara.playmax.app.navigation.AppNavigation
 import com.jetara.playmax.app.theme.PlayMaxTheme
+import com.jetara.playmax.app.theme.primary
+import com.jetara.playmax.app.theme.surface
+import com.jetara.playmax.presentation.ui.home.HomeScreen
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("NewApi")
     @OptIn(ExperimentalTvMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PlayMaxTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().background(surface),
                     shape = RectangleShape
                 ) {
-                    Greeting("Android")
+                    AppNavigation(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(surface)
+                    )
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PlayMaxTheme {
-        Greeting("Android")
-    }
-}
