@@ -32,8 +32,8 @@ fun OnSurfaceButton(
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val targetScale = when {
-        isPressed -> 1.1f
-        isFocused -> 1.1f
+        isPressed -> 1.0f
+        isFocused -> 1.05f
         else -> 1.0f
     }
 
