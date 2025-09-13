@@ -6,12 +6,18 @@ import com.jetara.playmax.domain.model.MovieBucket
 
 object MovieBucketUtil {
     private val BUCKET_NAMES = listOf("Picks for you", "Quick Pick", "Random Picks")
-    fun mapToMoviesBucket(movies: List<Movie>, bucketMovieLimit: Int = 2): List<MovieBucket> {
+    fun mapToMoviesBucket(movies: List<Movie>, bucketMovieLimit: Int = 4): List<MovieBucket> {
         val movieBuckets = mutableListOf<MovieBucket>()
 
         BUCKET_NAMES.fastForEachIndexed { index, bucketName ->
             val randomMovies = movies.shuffled().take(bucketMovieLimit)
-            movieBuckets.add(MovieBucket(id = index + 1, name = bucketName, movies = randomMovies))
+            val id = index + 1
+            movieBuckets.add(
+                MovieBucket(
+                    id = id,
+                    name = bucketName,
+                    movies = randomMovies.map { movie -> movie.copy(bucketId = id) })
+            )
         }
         return movieBuckets
     }

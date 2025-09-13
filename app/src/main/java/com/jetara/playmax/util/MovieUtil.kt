@@ -105,7 +105,7 @@ object MovieUtil {
                         duration = duration,
                         size = size,
                         thumbnail = thumbnail,
-                        bucketId = bucketId,
+                        bucketId = -1,
                         bucketName = bucketName,
                         description = "Nine noble families wage war against each other in order to gain control over the mythical land of Westeros. Meanwhile, a force is rising after millenniums and threatens the existence of living men.",
                         cast = listOf(

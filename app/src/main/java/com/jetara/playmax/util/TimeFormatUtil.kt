@@ -1,4 +1,4 @@
-package com.playmax.util
+package com.jetara.playmax.util
 
 import android.annotation.SuppressLint
 import kotlin.time.Duration.Companion.milliseconds
