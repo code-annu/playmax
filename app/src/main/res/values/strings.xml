@@ -5,4 +5,6 @@
     <string name="pause_video">Pause</string>
     <string name="close_controller">Close</string>
     <string name="play_now">Play now</string>
+    <string name="exit_txt">Exit</string>
+    <string name="cancel_txt">Cancel</string>
 </resources>

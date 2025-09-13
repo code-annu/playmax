@@ -10,7 +10,7 @@ data class Movie(
     val duration: Long,
     val size: Long,
     val thumbnail: Bitmap?,
-    val bucketId: String,
+    val bucketId: Int,
     val bucketName: String,
     val description: String,
     val cast: List<String> = emptyList()

@@ -1,6 +1,7 @@
 package com.jetara.playmax.presentation.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jetara.playmax.domain.model.Movie
@@ -22,6 +23,8 @@ class MovieViewModel : ViewModel() {
         viewModelScope.launch {
             _movies.value = MovieUtil.fetchMovies(context)
             _movieBuckets.value = MovieBucketUtil.mapToMoviesBucket(movies.value)
+            Log.d("MovieViewModel", "Movies: ${movies.value}")
+            Log.d("MovieViewModel", "Movies: ${movieBuckets.value}}")
         }
     }
 
