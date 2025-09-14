@@ -19,10 +19,14 @@ class MovieViewModel : ViewModel() {
     private val _movieBuckets = MutableStateFlow<List<MovieBucket>>(emptyList())
     val movieBuckets = _movieBuckets.asStateFlow()
 
+    private val _featuredMovie = MutableStateFlow<Movie?>(null)
+    val featuredMovie = _featuredMovie.asStateFlow()
+
     fun fetchMoviesBuckets(context: Context) {
         viewModelScope.launch {
             _movies.value = MovieUtil.fetchMovies(context)
             _movieBuckets.value = MovieBucketUtil.mapToMoviesBucket(movies.value)
+            _featuredMovie.value = movies.value.random()
             Log.d("MovieViewModel", "Movies: ${movies.value}")
             Log.d("MovieViewModel", "Movies: ${movieBuckets.value}}")
         }
@@ -31,5 +35,7 @@ class MovieViewModel : ViewModel() {
     fun getMovieFromBucket(bucketId: Int, movieId: Long): Movie? {
         return movieBuckets.value.find { it.id == bucketId }?.movies?.find { it.id == movieId }
     }
+
+
 
 }
