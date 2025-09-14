@@ -42,8 +42,8 @@ fun BucketComponent(
         )
         Spacer(Modifier.height(32.dp))
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(36.dp),
-            contentPadding = PaddingValues(horizontal = 12.dp)
+            horizontalArrangement = Arrangement.spacedBy(48.dp),
+            contentPadding = PaddingValues(horizontal = 36.dp)
         ) {
             items(bucket.movies) { movie ->
                 MovieItem(
