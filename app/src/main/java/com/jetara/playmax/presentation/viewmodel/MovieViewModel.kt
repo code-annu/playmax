@@ -22,6 +22,9 @@ class MovieViewModel : ViewModel() {
     private val _featuredMovie = MutableStateFlow<Movie?>(null)
     val featuredMovie = _featuredMovie.asStateFlow()
 
+    private val _searchResults = MutableStateFlow<List<Movie>>(emptyList())
+    val searchResults = _searchResults.asStateFlow()
+
     fun fetchMoviesBuckets(context: Context) {
         viewModelScope.launch {
             _movies.value = MovieUtil.fetchMovies(context)
@@ -36,6 +39,27 @@ class MovieViewModel : ViewModel() {
         return movieBuckets.value.find { it.id == bucketId }?.movies?.find { it.id == movieId }
     }
 
+    fun searchMovies(query: String) {
+        viewModelScope.launch {
+            if (query.isBlank()) {
+                _searchResults.value = emptyList()
+                return@launch
+            }
+            val videos = _movieBuckets.value.flatMap { it.movies }
+            val results = videos.filter {
+                it.title.contains(
+                    query,
+                    ignoreCase = true
+                )
+//                ) || it.description.contains(query, ignoreCase = true)
+            }
+            _searchResults.value = results
+        }
 
+    }
+
+    fun clearSearchResults() {
+        _searchResults.value = emptyList()
+    }
 
 }

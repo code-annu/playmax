@@ -36,8 +36,13 @@ fun ExitConfirmationDialog(
         confirmButton = {
             OnSurfaceButton(
                 textRes = R.string.exit_txt,
-                onClick = onConfirmExit
-            )
+            ){
+                if (adminPassword == "password") {
+                    onConfirmExit()
+                } else {
+                    adminPassword = ""
+                }
+            }
         },
         dismissButton = {
             OnSurfaceButton(

@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +30,7 @@ import com.jetara.playmax.core.component.button.OnSurfaceButton
 @Composable
 fun VideoPermissionRequester(modifier: Modifier = Modifier, onPermissionGranted: () -> Unit) {
     val context = LocalContext.current
+    val grantPermissionButtonFocusRequester = remember { FocusRequester() }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -51,11 +56,17 @@ fun VideoPermissionRequester(modifier: Modifier = Modifier, onPermissionGranted:
         )
         Spacer(Modifier.height(40.dp))
         OnSurfaceButton(
+            modifier = Modifier.focusRequester(grantPermissionButtonFocusRequester),
             textRes = R.string.grant_permission
         ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 launcher.launch(Manifest.permission.READ_MEDIA_VIDEO)
+            }else{
+                launcher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
+        }
+        LaunchedEffect(Unit) {
+            grantPermissionButtonFocusRequester.requestFocus()
         }
     }
 }

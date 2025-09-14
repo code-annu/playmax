@@ -2,6 +2,7 @@ package com.jetara.playmax.presentation.ui.home.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,22 +35,30 @@ fun HomeScreenContent(
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
 
+
     LaunchedEffect(Unit) {
         movieViewModel.fetchMoviesBuckets(navController.context)
     }
 
     Column(modifier) {
-        featuredMovie?.let {
-            HomeFeatureSection(
-                modifier = Modifier.fillMaxWidth().height(screenHeight/1.3f),
-                movie = it,
-                onPlayNowClick = { movie ->
-                    navController.navigate(AppRoute.MediaPlayer(movie.bucketId, movie.id))
-                },
-                onShowDetailsClick = { movie ->
-                    navController.navigate(AppRoute.MovieDetail(movie.bucketId, it.id))
-                }
-            )
+        Box {
+            featuredMovie?.let {
+                HomeFeatureSection(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(screenHeight / 1.3f),
+                    movie = it,
+                    onPlayNowClick = { movie ->
+                        navController.navigate(AppRoute.MediaPlayer(movie.bucketId, movie.id))
+                    },
+                    onShowDetailsClick = { movie ->
+                        navController.navigate(AppRoute.MovieDetail(movie.bucketId, it.id))
+                    }
+                )
+            }
+            HomeSearchbarButton(modifier = Modifier.fillMaxWidth(), onClick = {
+                navController.navigate(AppRoute.Search)
+            })
         }
         Spacer(Modifier.height(20.dp))
         moviesBuckets.map { movieBucket ->

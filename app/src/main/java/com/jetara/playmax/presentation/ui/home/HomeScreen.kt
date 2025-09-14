@@ -4,6 +4,7 @@ package com.jetara.playmax.presentation.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -24,7 +25,10 @@ fun HomeScreen(
     navController: NavController,
     movieViewModel: MovieViewModel
 ) {
-    val videoPermissionState = rememberPermissionState(Manifest.permission.READ_MEDIA_VIDEO)
+    val videoPermissionState = rememberPermissionState(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_VIDEO
+        else Manifest.permission.READ_EXTERNAL_STORAGE
+    )
     val scrollState = rememberScrollState()
 
     when (videoPermissionState.status) {

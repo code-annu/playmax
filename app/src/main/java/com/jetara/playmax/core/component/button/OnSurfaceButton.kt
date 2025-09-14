@@ -1,6 +1,7 @@
 package com.jetara.playmax.core.component.button
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -16,6 +17,7 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.jetara.playmax.app.theme.AppShapes
 import com.jetara.playmax.app.theme.onSurface
+import com.jetara.playmax.app.theme.primary
 import com.jetara.playmax.app.theme.surface
 
 @Composable
@@ -54,6 +56,7 @@ fun OnSurfaceButton(
     Button(
         modifier = modifier
             .scale(scale)
+//            .focusable(true)
             .then(Modifier),
         onClick = onClick,
         enabled = enabled,

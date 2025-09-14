@@ -1,11 +1,13 @@
 package com.jetara.playmax.core.component.input
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.tv.material3.Text
+import com.jetara.playmax.app.theme.onSurface
 
 @Composable
 fun TextInputField(
@@ -21,7 +23,8 @@ fun TextInputField(
         onValueChange = onValueChange,
         label = { Text(label) },
         modifier = modifier,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = onSurface)
     )
 
 }

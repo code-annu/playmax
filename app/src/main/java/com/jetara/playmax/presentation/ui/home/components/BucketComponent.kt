@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.jetara.playmax.app.theme.onSurface
-import com.jetara.playmax.core.component.movie.MovieItem
+import com.jetara.playmax.core.component.media.MovieItem
 import com.jetara.playmax.domain.model.Movie
 import com.jetara.playmax.domain.model.MovieBucket
 
