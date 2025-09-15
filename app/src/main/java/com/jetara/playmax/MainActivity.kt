@@ -1,6 +1,9 @@
 package com.jetara.playmax
 
 import android.annotation.SuppressLint
+import android.app.admin.DeviceAdminReceiver
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,15 +22,27 @@ import com.jetara.playmax.app.theme.primary
 import com.jetara.playmax.app.theme.surface
 import com.jetara.playmax.presentation.ui.home.HomeScreen
 
+class MyDeviceAdminReceiver : DeviceAdminReceiver()
 class MainActivity : ComponentActivity() {
     @SuppressLint("NewApi")
     @OptIn(ExperimentalTvMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dpm = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val adminComponent = ComponentName(this, MyDeviceAdminReceiver::class.java)
+        if (dpm.isDeviceOwnerApp(packageName)) {
+            dpm.setLockTaskPackages(adminComponent, arrayOf(packageName))
+        }
+        if (dpm.isLockTaskPermitted(packageName)) {
+            startLockTask();
+        }
+
         setContent {
             PlayMaxTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize().background(surface),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(surface),
                     shape = RectangleShape
                 ) {
                     AppNavigation(

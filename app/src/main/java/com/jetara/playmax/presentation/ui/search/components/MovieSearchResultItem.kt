@@ -44,7 +44,7 @@ fun MovieSearchResultItem(modifier: Modifier = Modifier, movie: Movie, onClick: 
 
     val targetScale = when {
         isPressed -> 0.95f
-        isFocused -> 1.05f
+        isFocused -> 1.0f
         else -> 1.0f
     }
 
@@ -101,5 +101,4 @@ fun MovieSearchResultItem(modifier: Modifier = Modifier, movie: Movie, onClick: 
             }
         }
     }
-
 }
