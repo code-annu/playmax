@@ -1,7 +1,6 @@
 package com.jetara.playmax.presentation.ui.home.components
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,16 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jetara.playmax.app.navigation.AppRoute
-import com.jetara.playmax.app.theme.primary
-import com.jetara.playmax.domain.model.Movie
 import com.jetara.playmax.presentation.viewmodel.MovieViewModel
 
 @SuppressLint("ConfigurationScreenWidthHeight")

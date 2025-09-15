@@ -17,6 +17,7 @@ import com.jetara.playmax.core.component.dialog.ExitConfirmationDialog
 import com.jetara.playmax.presentation.ui.home.HomeScreen
 import com.jetara.playmax.presentation.ui.media.MovieDetailScreen
 import com.jetara.playmax.presentation.ui.player.PlayerScreen
+import com.jetara.playmax.presentation.ui.search.SearchScreen
 import com.jetara.playmax.presentation.viewmodel.MovieViewModel
 
 
@@ -41,7 +42,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                 movieViewModel = movieViewMode
             )
         }
-        composable <AppRoute.MovieDetail>{backStackEntry ->
+        composable<AppRoute.MovieDetail> { backStackEntry ->
             val args = backStackEntry.toRoute<AppRoute.MovieDetail>()
             MovieDetailScreen(
                 modifier = modifier,
@@ -58,6 +59,15 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                 bucketId = args.bucketId,
                 movieId = args.mediaId,
                 movieViewModel = movieViewMode
+            )
+        }
+        composable<AppRoute.Search> {
+            SearchScreen(
+                modifier = modifier,
+                movieViewModel = movieViewMode,
+                onResultClick = { movie ->
+                    navController.navigate(AppRoute.MovieDetail(movie.bucketId, movie.id))
+                }
             )
         }
 

@@ -31,7 +31,7 @@ fun HomeFeatureSection(
     onPlayNowClick: (Movie) -> Unit,
     onShowDetailsClick: (Movie) -> Unit
 ) {
-    val gradientColors = listOf(surface, surface.copy(.5f))
+    val gradientColors = listOf(surface, surface.copy(.0f))
     val horizontalGradientBrush = Brush.horizontalGradient(
         colors = gradientColors,
 
@@ -56,7 +56,9 @@ fun HomeFeatureSection(
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleLarge.copy(color = onSurface),
-                modifier = Modifier.fillMaxWidth(.5f).padding(horizontal = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth(.5f)
+                    .padding(horizontal = 10.dp)
             )
             ButtonsSection(
                 modifier = Modifier.padding(10.dp),
