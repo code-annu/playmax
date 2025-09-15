@@ -28,8 +28,8 @@ import com.jetara.playmax.domain.model.Movie
 fun HomeFeatureSection(
     modifier: Modifier = Modifier,
     movie: Movie,
-    onPlayNowClick: (Movie) -> Unit,
-    onShowDetailsClick: (Movie) -> Unit
+    onPlayNowClick: () -> Unit,
+    onShowDetailsClick: () -> Unit
 ) {
     val gradientColors = listOf(surface, surface.copy(.0f))
     val horizontalGradientBrush = Brush.horizontalGradient(
@@ -62,8 +62,8 @@ fun HomeFeatureSection(
             )
             ButtonsSection(
                 modifier = Modifier.padding(10.dp),
-                onPlayNowClick = { onPlayNowClick(movie) },
-                onShowDetailsClick = { onShowDetailsClick(movie) }
+                onPlayNowClick = onPlayNowClick,
+                onShowDetailsClick = onShowDetailsClick
             )
         }
     }

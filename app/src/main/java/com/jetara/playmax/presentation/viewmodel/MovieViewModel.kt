@@ -29,7 +29,7 @@ class MovieViewModel : ViewModel() {
         viewModelScope.launch {
             _movies.value = MovieUtil.fetchMovies(context)
             _movieBuckets.value = MovieBucketUtil.mapToMoviesBucket(movies.value)
-            _featuredMovie.value = movies.value.random()
+            _featuredMovie.value = _movieBuckets.value.random().movies.random()
             Log.d("MovieViewModel", "Movies: ${movies.value}")
             Log.d("MovieViewModel", "Movies: ${movieBuckets.value}}")
         }
@@ -45,8 +45,8 @@ class MovieViewModel : ViewModel() {
                 _searchResults.value = emptyList()
                 return@launch
             }
-            val videos = _movieBuckets.value.flatMap { it.movies }
-            val results = videos.filter {
+            val movies = _movieBuckets.value.flatMap { it.movies }
+            val results = movies.filter {
                 it.title.contains(
                     query,
                     ignoreCase = true

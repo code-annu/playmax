@@ -1,6 +1,7 @@
 package com.jetara.playmax.presentation.ui.home.components
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -42,11 +43,13 @@ fun HomeScreenContent(
                         .fillMaxWidth()
                         .height(screenHeight / 1.3f),
                     movie = it,
-                    onPlayNowClick = { movie ->
-                        navController.navigate(AppRoute.MediaPlayer(movie.bucketId, movie.id))
+                    onPlayNowClick = {
+                        Log.i("HomeScreenContent", "onPlayNowClick: ${it}")
+                        navController.navigate(AppRoute.MediaPlayer(it.bucketId, it.id))
                     },
-                    onShowDetailsClick = { movie ->
-                        navController.navigate(AppRoute.MovieDetail(movie.bucketId, it.id))
+                    onShowDetailsClick = {
+                        Log.i("HomeScreenContent", "onPlayNowClick: ${it}")
+                        navController.navigate(AppRoute.MovieDetail(it.bucketId, it.id))
                     }
                 )
             }
