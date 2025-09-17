@@ -15,4 +15,5 @@ class BootReceiver : BroadcastReceiver() {
             context.startActivity(i)
         }
     }
+
 }
