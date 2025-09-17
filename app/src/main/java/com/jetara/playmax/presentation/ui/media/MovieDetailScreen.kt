@@ -7,12 +7,17 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -31,7 +37,10 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.jetara.playmax.R
 import com.jetara.playmax.app.navigation.AppRoute
+import com.jetara.playmax.app.theme.onSecondary
 import com.jetara.playmax.app.theme.onSurface
+import com.jetara.playmax.app.theme.primary
+import com.jetara.playmax.app.theme.secondary
 import com.jetara.playmax.app.theme.surface
 import com.jetara.playmax.core.component.button.OnSurfaceButton
 import com.jetara.playmax.domain.model.Movie
@@ -71,10 +80,15 @@ fun MovieDetailScreen(
                     }
                 )
             }
-            VideoDescription(modifier = Modifier.padding(horizontal = 10.dp), description = it.description)
-
-            VideoCast(cast = it.cast)
-            OnSurfaceButton(textRes = R.string.play_now) { }
+            Spacer(modifier = Modifier.height(20.dp))
+            Row {
+                VideoDescription(
+                    modifier = Modifier.fillMaxWidth(.5f).padding(horizontal = 16.dp),
+                    description = it.description
+                )
+                VerticalDivider(color = secondary.copy(.5f), thickness = 1.dp, modifier = Modifier.fillMaxHeight())
+                VideoCast(cast = it.cast)
+            }
 
         }
     }
@@ -89,6 +103,8 @@ fun VideoPosterSection(
     movieTitle: String,
     onPlayNow: () -> Unit
 ) {
+    val gradientColors = listOf(surface.copy(.0f), surface)
+    val verticalGradientBrush = Brush.verticalGradient(colors = gradientColors)
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -105,7 +121,7 @@ fun VideoPosterSection(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(surface.copy(alpha = 0.5f))
+                .background(verticalGradientBrush)
         )
 
         Column(
@@ -127,7 +143,7 @@ fun VideoPosterSection(
             OnSurfaceButton(
                 textRes = R.string.play_now,
                 onClick = onPlayNow,
-                modifier = Modifier.fillMaxWidth(.5f)
+                modifier = Modifier.fillMaxWidth(.5f).padding(start = 12.dp)
             )
         }
     }
@@ -149,8 +165,8 @@ private fun VideoDescription(modifier: Modifier = Modifier, description: String)
 @Composable
 private fun VideoCast(modifier: Modifier = Modifier, cast: List<String>) {
     Text(
-        text = "Cast: ${cast.joinToString(", ")}",
+        text = "Cast: ${cast.joinToString(" | ")}",
         modifier = modifier,
-        style = MaterialTheme.typography.labelLarge.copy(color = onSurface)
+        style = MaterialTheme.typography.titleMedium.copy(color = onSecondary)
     )
 }
