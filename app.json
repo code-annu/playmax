@@ -32,6 +32,14 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow PlayMax to access your videos.",
+          "savePhotosPermission": "Allow PlayMax to save videos.",
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ],
     "experiments": {
