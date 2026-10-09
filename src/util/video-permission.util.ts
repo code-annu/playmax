@@ -2,7 +2,7 @@ import {
   requestPermissionsAsync,
   getPermissionsAsync,
   type PermissionResponse,
-} from 'expo-media-library';
+} from 'expo-media-library/legacy';
 
 import type { MediaPermissionState } from '../types';
 

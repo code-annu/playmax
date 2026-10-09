@@ -1,4 +1,5 @@
-import { Asset } from 'expo-media-library';
+import type { Asset } from 'expo-media-library/legacy';
+import { getAssetInfoAsync } from 'expo-media-library/legacy';
 
 import type {
   VideoItem,
@@ -27,15 +28,20 @@ export async function mapAssetToVideoItem(
   asset: Asset,
   options?: { includeFileSize?: boolean }
 ): Promise<VideoItem> {
-  const info = await asset.getInfo();
+  let info: any = asset;
+  try {
+    info = await getAssetInfoAsync(asset);
+  } catch {
+    info = asset;
+  }
 
-  const id = asset.id || info.id;
-  const uri = info.uri || asset.id;
-  const filename = info.filename || `video_${id}.mp4`;
-  const durationSec = typeof info.duration === 'number' ? info.duration : 0;
+  const id = asset.id || info?.id;
+  const uri = info?.localUri || info?.uri || asset.uri || asset.id;
+  const filename = asset.filename || info?.filename || `video_${id}.mp4`;
+  const durationSec = typeof asset.duration === 'number' ? asset.duration : typeof info?.duration === 'number' ? info.duration : 0;
   const durationMs = Math.round(durationSec * 1000);
-  const width = typeof info.width === 'number' ? info.width : 0;
-  const height = typeof info.height === 'number' ? info.height : 0;
+  const width = typeof asset.width === 'number' ? asset.width : typeof info?.width === 'number' ? info.width : 0;
+  const height = typeof asset.height === 'number' ? asset.height : typeof info?.height === 'number' ? info.height : 0;
   const aspectRatio = width > 0 && height > 0 ? width / height : 16 / 9;
   const resolution = getResolutionLabel(width, height);
   const orientation = getVideoOrientation(width, height);
@@ -52,12 +58,11 @@ export async function mapAssetToVideoItem(
   const size = options?.includeFileSize ? getSafeFileSize(uri) : 0;
   const sizeFormatted = size > 0 ? formatFileSize(size) : '--';
 
-  const createdAt = info.creationTime || Date.now();
-  const modifiedAt = info.modificationTime || createdAt;
-  const isFavorite = Boolean(info.isFavorite);
+  const createdAt = asset.creationTime || info?.creationTime || Date.now();
+  const modifiedAt = asset.modificationTime || info?.modificationTime || createdAt;
+  const isFavorite = Boolean(info?.isFavorite);
 
   // Use contentUri or uri for thumbnail/cover
-  // In React Native / expo-image, both content:// and file:// can be rendered directly as video thumbnails
   const coverUri = uri || id;
 
   return {
@@ -105,11 +110,11 @@ export async function batchMapAssetsToVideoItems(
           return await mapAssetToVideoItem(asset, options);
         } catch {
           // If a single asset fails to load, gracefully create a minimal fallback
-          const fallbackUri = asset.id;
+          const fallbackUri = asset.uri || asset.id;
           return {
             id: asset.id,
             title: `Video ${asset.id}`,
-            filename: `video_${asset.id}.mp4`,
+            filename: asset.filename || `video_${asset.id}.mp4`,
             uri: fallbackUri,
             absolutePath: fallbackUri,
             parentDir: 'Videos',

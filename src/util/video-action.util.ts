@@ -1,4 +1,7 @@
-import { Asset } from 'expo-media-library';
+import {
+  deleteAssetsAsync,
+  setAssetFavoriteAsync,
+} from 'expo-media-library/legacy';
 
 // ============================================================================
 // MUTATIONS & ACTIONS
@@ -12,9 +15,7 @@ export async function setVideoFavorite(
   isFavorite: boolean
 ): Promise<boolean> {
   try {
-    const asset = new Asset(id);
-    await asset.setFavorite(isFavorite);
-    return true;
+    return await setAssetFavoriteAsync(id, isFavorite);
   } catch {
     return false;
   }
@@ -25,9 +26,7 @@ export async function setVideoFavorite(
  */
 export async function deleteVideo(id: string): Promise<boolean> {
   try {
-    const asset = new Asset(id);
-    await asset.delete();
-    return true;
+    return await deleteAssetsAsync(id);
   } catch {
     return false;
   }
@@ -38,9 +37,7 @@ export async function deleteVideo(id: string): Promise<boolean> {
  */
 export async function deleteVideos(ids: string[]): Promise<boolean> {
   try {
-    const assets = ids.map((id) => new Asset(id));
-    await Asset.delete(assets);
-    return true;
+    return await deleteAssetsAsync(ids);
   } catch {
     return false;
   }

@@ -1,4 +1,9 @@
-import { Album, MediaType } from 'expo-media-library';
+import {
+  type Album,
+  getAlbumsAsync,
+  getAssetsAsync,
+  MediaType,
+} from 'expo-media-library/legacy';
 
 import type { VideoFolder, VideoItem } from '../types';
 import { fetchDeviceVideos } from './video-fetch.util';
@@ -78,23 +83,20 @@ export async function fetchVideoFolders(): Promise<VideoFolder[]> {
 
   try {
     // Attempt 1: Fetch via device albums
-    const albums = await Album.getAll();
+    const albums: Album[] = await getAlbumsAsync();
     const folderList: VideoFolder[] = [];
 
     for (const album of albums) {
       try {
-        const albumAssets = await album.getAssets();
-        // Check if album contains video assets
-        const videoAssets = [];
-        for (const asset of albumAssets) {
-          const type = await asset.getMediaType();
-          if (type === MediaType.VIDEO) {
-            videoAssets.push(asset);
-          }
-        }
+        const albumAssetsResult = await getAssetsAsync({
+          album: album.id,
+          mediaType: [MediaType.video],
+          first: 100,
+        });
+        const videoAssets = albumAssetsResult.assets || [];
 
         if (videoAssets.length > 0) {
-          const title = await album.getTitle();
+          const title = album.title || 'Videos';
           const items = await batchMapAssetsToVideoItems(videoAssets, {
             includeFileSize: false,
           });
@@ -132,7 +134,7 @@ export async function fetchVideoFolders(): Promise<VideoFolder[]> {
       return folderList.sort((a, b) => a.name.localeCompare(b.name));
     }
   } catch {
-    // If Album.getAll() fails or returns empty, fallback to querying all videos and grouping
+    // If albums fail or return empty, fallback to querying all videos and grouping
   }
 
   // Fallback: Query all videos and group by parent directory

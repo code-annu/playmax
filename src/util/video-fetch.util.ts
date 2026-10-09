@@ -1,9 +1,10 @@
 import {
-  Asset,
-  AssetField,
+  getAssetInfoAsync,
+  getAssetsAsync,
   MediaType,
-  Query,
-} from 'expo-media-library';
+  SortBy,
+  type SortByKey,
+} from 'expo-media-library/legacy';
 
 import type {
   FetchVideosOptions,
@@ -19,7 +20,7 @@ import { sortVideos } from './video-sort.util';
 // ============================================================================
 
 /**
- * Fetches videos from device storage using the modern Expo MediaLibrary Query API.
+ * Fetches videos from device storage using Expo MediaLibrary.
  * Supports pagination, sorting, search, and folder filtering.
  */
 export async function fetchDeviceVideos(
@@ -41,31 +42,30 @@ export async function fetchDeviceVideos(
   const sortOrder = options.sortOrder ?? 'desc';
   const ascending = sortOrder === 'asc';
 
-  // Construct Query with the new Expo MediaLibrary Query API
-  let query = new Query().eq(AssetField.MEDIA_TYPE, MediaType.VIDEO);
-
-  // Apply MediaStore level sorting when applicable
+  let legacySortKey: SortByKey = SortBy.modificationTime;
   switch (sortBy) {
     case 'dateAdded':
-      query = query.orderBy({ key: AssetField.CREATION_TIME, ascending });
+      legacySortKey = SortBy.creationTime;
       break;
     case 'dateModified':
-      query = query.orderBy({ key: AssetField.MODIFICATION_TIME, ascending });
+      legacySortKey = SortBy.modificationTime;
       break;
     case 'duration':
-      query = query.orderBy({ key: AssetField.DURATION, ascending });
+      legacySortKey = SortBy.duration;
       break;
     default:
-      // Default sort by modification time descending
-      query = query.orderBy({ key: AssetField.MODIFICATION_TIME, ascending });
+      legacySortKey = SortBy.modificationTime;
       break;
   }
 
-  // Set pagination
-  query = query.limit(limit).offset(offset);
+  // Execute query via getAssetsAsync
+  const pageResult = await getAssetsAsync({
+    mediaType: [MediaType.video],
+    sortBy: [[legacySortKey, ascending]],
+    first: limit,
+  });
 
-  // Execute query
-  const rawAssets = await query.exe();
+  const rawAssets = pageResult.assets || [];
 
   // Convert Asset instances into rich VideoItem models
   let videos = await batchMapAssetsToVideoItems(rawAssets, {
@@ -99,12 +99,12 @@ export async function fetchDeviceVideos(
     videos = sortVideos(videos, sortBy, sortOrder);
   }
 
-  const hasMore = rawAssets.length === limit;
+  const hasMore = pageResult.hasNextPage ?? (rawAssets.length === limit);
   const nextOffset = offset + rawAssets.length;
 
   return {
     videos,
-    totalCount: videos.length,
+    totalCount: pageResult.totalCount ?? videos.length,
     hasMore,
     nextOffset,
   };
@@ -115,7 +115,8 @@ export async function fetchDeviceVideos(
  */
 export async function fetchVideoById(id: string): Promise<VideoItem | null> {
   try {
-    const asset = new Asset(id);
+    const asset = await getAssetInfoAsync(id);
+    if (!asset) return null;
     return await mapAssetToVideoItem(asset, { includeFileSize: true });
   } catch {
     return null;
